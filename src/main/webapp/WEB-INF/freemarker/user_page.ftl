@@ -7,12 +7,8 @@
     </head>
 
     <body>
-        <#macro info text>
-            <div class="panel panel-default">
-                <div class="panel-body">${text}</div>
-            </div>
-        </#macro>
-        <#macro tHeads>
+
+        <#macro tHead>
             <thead>
                 <tr>
                     <th> Firstname </th>
@@ -20,80 +16,45 @@
                     <th> sex </th>
                     <th> city </th>
                     <th> mobile </th>
-                    <th>  </th>
+                    <th> </th>
                     <#nested>
                 </tr>
             </thead>
         </#macro>
 
-        <div class="container">
-            <h3> Hello, ${user.lastName} ${user.firstName}! We have missed you :) </h3>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">SN</a>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Home</a></li>
+                        <li><a id="showF" href="#" onclick="doAjaxShowFriends()">friends</a></li>
+                        <li><a id="showOU" href="#" onclick="doAjaxShowOtherUsers()">other users</a></li>
+                        <li><a href="#">games</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-            <#if hasFriends>
-                <@info text="Your friends:"/>
-                <table class="table">
-                    <@tHeads> <th> </th> </@tHeads>
-                    <tbody>
-                        <#list friends as f>
-                            <tr>
-                                <td> ${f.firstName} </td>
-                                <td> ${f.lastName} </td>
-                                <td> ${f.sex} </td>
-                                <td> <#if f.city??>${f.city}</#if> </td>
-                                <td> <#if f.mobilePhone??>${f.mobilePhone}</#if> </td>
-                                <td>
-                                    <form action="/dialog" method="get">
-                                        <input name="sender" type="text" style="display: none" value=${user.id}>
-                                        <input name="recipient" type="text" style="display: none" value=${f.id}>
-                                        <input type="submit" class="btn bg-success" value="show dialog">
-                                    </form>
-                                </td>
-                                <td>
-                                    <form action="/removeFriends" method="post">
-                                        <input name="sender" type="text" style="display: none" value=${user.id}>
-                                        <input name="recipient" type="text" style="display: none" value=${f.id}>
-                                        <input type="submit" class="btn bg-success" value="remove friend">
-                                    </form>
-                                </td>
-                            </tr>
-                        </#list>
-                    </tbody>
-                </table>
-            <#else>
-                <@info text="You don`t have friends yet! Hurry up to find some :)"/>
-            </#if>
+        <div class="container users" style="display: none">
+            <table class="table">
+                <@tHead/>
+                <tbody class="users">
 
-            <#if hasUsers>
-                <@info text="Other users:"/>
-                <table class="table">
-                    <@tHeads/>
-                    <tbody>
-                        <#list users as u>
-                            <tr>
-                                <td> ${u.firstName} </td>
-                                <td> ${u.lastName} </td>
-                                <td> ${u.sex} </td>
-                                <td> <#if u.city??>${u.city}</#if> </td>
-                                <td> <#if u.mobilePhone??>${u.mobilePhone}</#if> </td>
-                                <td>
-                                    <form action="/makeFriends" method="post">
-                                        <input name="sender" type="text" style="display: none" value=${user.id}>
-                                        <input name="recipient" type="text" style="display: none" value=${u.id}>
-                                        <input type="submit" class="btn bg-success" value="add to friends">
-                                    </form>
-                                </td>
-                            </tr>
-                        </#list>
-                    </tbody>
-                </table>
-            <#else>
-                <@info text="There is no other users yet :)"/>
-            </#if>
-
+                </tbody>
+            </table>
         </div>
+
+        <form style="display: none">
+            <input id="sender" type="text" value=${user.id}>
+        </form>
 
         <script type="text/javascript" src="/resources/jquery-2.1.4.js"></script>
         <script type="text/javascript" src="/resources/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/resources/myJs/user_page.js"></script>
+
     </body>
 
 </html>

@@ -47,7 +47,6 @@
                     success: function (response) {
                         var dlg=$("#dialog");
                         dlg.append(response);
-                        dlg.fadeIn();
                     }
                 });
             }
