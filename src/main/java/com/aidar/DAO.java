@@ -23,4 +23,6 @@ public interface DAO {
 
     public void sendMessage(Integer sender, Integer recipient, String message);
 
+    public List<Message> getNewMessages(Integer senderId, Integer recipientId);
+
 }

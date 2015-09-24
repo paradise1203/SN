@@ -8,4 +8,6 @@ public interface MessageDAO {
 
     public void addMessage(Integer sId, Integer rId, String message);
 
+    public List<Message> getNewMessages(Integer sId, Integer rId);
+
 }
