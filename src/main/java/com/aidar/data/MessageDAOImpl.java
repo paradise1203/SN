@@ -45,8 +45,9 @@ public class MessageDAOImpl implements MessageDAO {
         query.setParameter("sId", sId);
         query.setParameter("rId", rId);
         query.setParameter("isNew", true);
+        List<Message> messages = query.getResultList();
         update(sId, rId);
-        return query.getResultList();
+        return messages;
     }
 
 }
