@@ -8,7 +8,7 @@ import java.util.Date;
 public class Message {
 
     @Id
-    @Column
+    @Column(name = "id")
     private int id;
 
     @Column(name = "sender_id")
@@ -24,14 +24,18 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
+    @Column(name = "new")
+    private boolean isNew;
+
     public Message() {
     }
 
-    public Message(int senderId, int recipientId, String message, Date date) {
+    public Message(int senderId, int recipientId, String message, Date date, boolean isNew) {
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.message = message;
         this.date = date;
+        this.isNew = isNew;
     }
 
     public int getId() {
@@ -72,6 +76,14 @@ public class Message {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
     }
 
 }

@@ -24,13 +24,16 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     @Override
     public Integer addUser(UserInf userInf) {
         String sex = null;
+        String city = null;
         if (isNewUser(userInf)) {
             if (userInf.getSex() == 2)
                 sex = "male";
             else
                 sex = "female";
+            if (userInf.getCity() != null)
+                city = userInf.getCity().getTitle();
             entityManager.persist(new User(userInf.getId(), userInf.getFirstName(), userInf.getLastName(),
-                    sex, userInf.getCity().getTitle(), userInf.getMobilePhone()));
+                    sex, city, userInf.getMobilePhone()));
         }
         return userInf.getId();
     }

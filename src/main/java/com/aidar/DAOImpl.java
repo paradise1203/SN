@@ -21,12 +21,14 @@ public class DAOImpl implements DAO {
     private UserRepository userRepository;
 
     @Autowired
-    VkOAuthService vkOAuthService;
+    private VkOAuthService vkOAuthService;
 
+    @Override
     public Integer addUserAndGetId(String code) {
         return userRepository.addUser(vkOAuthService.processUser(code));
     }
 
+    @Override
     public List<User> getFriends(Integer id) {
         List<Friends> friendsList = friendsDAO.getFriends(id);
         List<Integer> ids = new LinkedList<>();
@@ -44,30 +46,41 @@ public class DAOImpl implements DAO {
         return friends;
     }
 
+    @Override
     public List<User> getOtherUsers(Integer id, List<User> friends) {
         List<User> users = userRepository.getUsers(id);
         users.removeAll(friends);
         return users;
     }
 
+    @Override
     public User getCurrentUser(Integer id) {
         return userRepository.findById(id);
     }
 
+    @Override
     public void makeFriends(Integer senderId, Integer recipientId) {
         friendsDAO.addFriends(senderId, recipientId);
     }
 
+    @Override
     public void removeFriends(Integer senderId, Integer recipientId) {
         friendsDAO.removeFriends(senderId, recipientId);
     }
 
+    @Override
     public List<Message> getDialog(Integer senderId, Integer recipientId) {
         return messageDAO.getMessages(senderId, recipientId);
     }
 
+    @Override
     public void sendMessage(Integer sender, Integer recipient, String message) {
         messageDAO.addMessage(sender, recipient, message);
+    }
+
+    @Override
+    public List<Message> getNewMessages(Integer senderId, Integer recipientId) {
+        return messageDAO.getNewMessages(senderId, recipientId);
     }
 
 }

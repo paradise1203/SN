@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -128,6 +129,22 @@ public class MainController {
         Integer rId = Integer.parseInt(parse(recipientId));
         dao.sendMessage(sId, rId, message);
         return "<li>" + "You at " + new Date() + " : " + message + "</li>";
+    }
+
+    @RequestMapping("/getMessage")
+    public
+    @ResponseBody
+    String getNewMessages(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
+                          ModelMap model) {
+        Integer sId = Integer.parseInt(parse(senderId));
+        Integer rId = Integer.parseInt(parse(recipientId));
+        List<Message> messages = dao.getNewMessages(sId, rId);
+        User recipient = dao.getCurrentUser(rId);
+        String res = "";
+        Iterator<Message> it = messages.listIterator();
+        while (it.hasNext())
+            res += "<li>" + recipient.getFirstName() + " at " + new Date() + " : " + it.next().getMessage() + "</li>";
+        return res;
     }
 
 }
