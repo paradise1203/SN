@@ -29,30 +29,9 @@
                 <input type="button" class="btn btn-success" value="Send" onclick="doAjaxSendMessage()">
             </form>
         </div>
-        <script type="text/javascript">
-            function doAjaxSendMessage() {
-                var sender = $("#sender").val();
-                var recipient = $("#recipient").val();
-                var message = $("#message").val();
-
-                $.ajax({
-                    url: 'sendMessage',
-                    type: 'POST',
-                    data: {
-                        sender: sender,
-                        recipient: recipient,
-                        message: message
-                    },
-                    dataType: 'text',
-                    success: function (response) {
-                        var dlg=$("#dialog");
-                        dlg.append(response);
-                    }
-                });
-            }
-        </script>
         <script type="text/javascript" src="/resources/jquery-2.1.4.js"></script>
         <script type="text/javascript" src="/resources/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/resources/myJs/dialog_page.js"></script>
     </body>
 
 </html>

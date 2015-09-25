@@ -44,7 +44,7 @@ function doAjaxShowFriends() {
         },
         dataType: 'html',
         success: function (response) {
-            $("#friends").append(response);
+            $("#content").html(response);
         }
     });
 }
@@ -60,8 +60,7 @@ function doAjaxShowOtherUsers() {
         },
         dataType: 'html',
         success: function (response) {
-            $("tbody.users").append(response);
-            $("div.users").css("display", "block");
+            $("#content").html(response);
         }
     });
 }

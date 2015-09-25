@@ -1,5 +1,6 @@
 package com.aidar;
 
+import com.aidar.data.Message;
 import com.aidar.data.User;
 import com.aidar.vkapi.UrlCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,13 +69,15 @@ public class MainController {
     public String showUserHomePage(@PathVariable Integer id, HttpServletRequest request, ModelMap model) {
         if (getCookie(request.getCookies()).equals(id.toString())) {
             model.addAttribute("user", dao.getCurrentUser(id));
-            return "user_page";
+            return "main_page";
         } else
             return "redirect:/oAuth";
     }
 
+
     @RequestMapping(value = "/f", method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     ModelAndView showFriends(@RequestParam("sender") String senderId, ModelMap model) {
         Integer sId = Integer.parseInt(parse(senderId));
         List<User> friends = dao.getFriends(sId);
@@ -85,32 +88,39 @@ public class MainController {
     }
 
     @RequestMapping(value = "/ou", method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     ModelAndView showOtherUsers(@RequestParam("sender") String senderId, ModelMap model) {
         Integer sId = Integer.parseInt(parse(senderId));
         List<User> friends = dao.getFriends(sId);
         List<User> users = dao.getOtherUsers(sId, friends);
         model.addAttribute("user", dao.getCurrentUser(sId));
         model.addAttribute("users", users);
+        model.addAttribute("hasUsers", !users.isEmpty());
         return new ModelAndView("otherUsers_page");
     }
 
+
     @RequestMapping(value = "/makeFriends", method = RequestMethod.POST)
-    public @ResponseBody void makeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId) {
+    public
+    @ResponseBody
+    void makeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId) {
         Integer sId = Integer.parseInt(parse(senderId));
         Integer rId = Integer.parseInt(parse(recipientId));
         dao.makeFriends(sId, rId);
     }
 
     @RequestMapping(value = "/removeFriends", method = RequestMethod.POST)
-    public @ResponseBody void removeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId) {
+    public
+    @ResponseBody
+    void removeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId) {
         Integer sId = Integer.parseInt(parse(senderId));
         Integer rId = Integer.parseInt(parse(recipientId));
         dao.removeFriends(sId, rId);
     }
 
-    /*@RequestMapping("/dialog")
-    public @ResponseBody ModelAndView showDialog(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
+    @RequestMapping("/dialog")
+    public String showDialog(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
                              HttpServletRequest request, ModelMap model) {
         Integer sId = Integer.parseInt(parse(senderId));
         if (getCookie(request.getCookies()).equals(sId.toString())) {
@@ -123,7 +133,7 @@ public class MainController {
             return "dialog_page";
         } else
             return "redirect:/oAuth";
-    }*/
+    }
 
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     public

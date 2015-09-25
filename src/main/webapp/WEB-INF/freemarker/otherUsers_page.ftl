@@ -1,22 +1,43 @@
 <link rel="stylesheet" href="/bootstrap.min.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<#list users as u>
-    <tr>
-        <td> ${u.firstName} </td>
-        <td> ${u.lastName} </td>
-        <td> ${u.sex} </td>
-        <td> <#if u.city??>${u.city}</#if> </td>
-        <td> <#if u.mobilePhone??>${u.mobilePhone}</#if> </td>
-        <td>
-            <form role="form">
-                <input class="sender" type="text" style="display: none" value=${user.id}>
-                <input class="recipient" type="text" style="display: none" value=${u.id}>
-                <input type="button" class="btn btn-success addFriend" value="add to friends">
-            </form>
-        </td>
-    </tr>
-</#list>
+<div class="container">
+    <#if hasUsers>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> Firstname </th>
+                    <th> Lastname </th>
+                    <th> sex </th>
+                    <th> city </th>
+                    <th> mobile </th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                <#list users as u>
+                    <tr>
+                        <td> ${u.firstName} </td>
+                        <td> ${u.lastName} </td>
+                        <td> ${u.sex} </td>
+                        <td> <#if u.city??>${u.city}</#if> </td>
+                        <td> <#if u.mobilePhone??>${u.mobilePhone}</#if> </td>
+                        <td>
+                            <form role="form">
+                                <input class="sender" type="text" style="display: none" value=${user.id}>
+                                <input class="recipient" type="text" style="display: none" value=${u.id}>
+                                <input type="button" class="btn btn-success addFriend" value="add to friends">
+                            </form>
+                        </td>
+                    </tr>
+                </#list>
+            </tbody>
+        </table>
+    <#else>
+        <div class="panel panel-default">
+            <div class="panel-body">There are no other users except your friends yet :)</div>
+        </div>
+    </#if>
+</div>
 
 <script type="text/javascript" src="/resources/jquery-2.1.4.js"></script>
 <script type="text/javascript" src="/resources/bootstrap.min.js"></script>

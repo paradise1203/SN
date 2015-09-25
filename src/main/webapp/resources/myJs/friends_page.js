@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    $(".addFriend").click(function () {
+    $(".remFriend").click(function () {
         var ctx=$(this);
         ctx.closest("tr").hide();
 
-        var sender=ctx.closest(".sender").val();
-        var recipient=ctx.closest(".recipient").val();
+        var sender = ctx.closest(".sender").val();
+        var recipient = ctx.closest(".recipient").val();
         $.ajax({
-            url: 'makeFriends',
+            url: 'removeFriends',
             type: 'POST',
             data: {
                 sender: sender,
