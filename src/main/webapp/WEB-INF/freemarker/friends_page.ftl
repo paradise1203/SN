@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="/bootstrap.min.css">
-
 <div class="container">
     <#if hasFriends>
         <table class="table">
@@ -23,16 +21,16 @@
                     <td> <#if f.city??>${f.city}</#if> </td>
                     <td> <#if f.mobilePhone??>${f.mobilePhone}</#if> </td>
                     <td>
-                        <form role="form" action="/dialog" target="_blank">
-                            <input class="sender" type="text" style="display: none" value=${user.id}>
-                            <input class="recipient" type="text" style="display: none" value=${f.id}>
-                            <input type="button" class="btn btn-success" value="show dialog">
+                        <form role="form">
+                            <input type="text" style="display: none" value=${user.id}>
+                            <input type="text" style="display: none" value=${f.id}>
+                            <input type="button" class="btn btn-success dialog" value="show dialog">
                         </form>
                     </td>
                     <td>
                         <form role="form">
-                            <input class="sender" type="text" style="display: none" value=${user.id}>
-                            <input class="recipient" type="text" style="display: none" value=${f.id}>
+                            <input type="text" style="display: none" value=${user.id}>
+                            <input type="text" style="display: none" value=${f.id}>
                             <input type="button" class="btn btn-success remFriend" value="remove friend">
                         </form>
                     </td>
@@ -46,7 +44,3 @@
         </div>
     </#if>
 </div>
-
-<script type="text/javascript" src="/resources/jquery-2.1.4.js"></script>
-<script type="text/javascript" src="/resources/bootstrap.min.js"></script>
-<script type="text/javascript" src="/resources/myJs/friends_page.js"></script>

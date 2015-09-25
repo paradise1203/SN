@@ -75,7 +75,7 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "/f", method = RequestMethod.POST)
+    @RequestMapping("/f")
     public
     @ResponseBody
     ModelAndView showFriends(@RequestParam("sender") String senderId, ModelMap model) {
@@ -87,7 +87,7 @@ public class MainController {
         return new ModelAndView("friends_page");
     }
 
-    @RequestMapping(value = "/ou", method = RequestMethod.POST)
+    @RequestMapping("/ou")
     public
     @ResponseBody
     ModelAndView showOtherUsers(@RequestParam("sender") String senderId, ModelMap model) {
@@ -120,19 +120,18 @@ public class MainController {
     }
 
     @RequestMapping("/dialog")
-    public String showDialog(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
-                             HttpServletRequest request, ModelMap model) {
+    public
+    @ResponseBody
+    ModelAndView showDialog(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
+                            HttpServletRequest request, ModelMap model) {
         Integer sId = Integer.parseInt(parse(senderId));
-        if (getCookie(request.getCookies()).equals(sId.toString())) {
-            Integer rId = Integer.parseInt(parse(recipientId));
-            List<Message> messages = dao.getDialog(sId, rId);
-            model.addAttribute("messages", messages);
-            model.addAttribute("hasMessages", !messages.isEmpty());
-            model.addAttribute("sender", dao.getCurrentUser(sId));
-            model.addAttribute("recipient", dao.getCurrentUser(rId));
-            return "dialog_page";
-        } else
-            return "redirect:/oAuth";
+        Integer rId = Integer.parseInt(parse(recipientId));
+        List<Message> messages = dao.getDialog(sId, rId);
+        model.addAttribute("messages", messages);
+        model.addAttribute("hasMessages", !messages.isEmpty());
+        model.addAttribute("sender", dao.getCurrentUser(sId));
+        model.addAttribute("recipient", dao.getCurrentUser(rId));
+        return new ModelAndView("dialog_page");
     }
 
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)

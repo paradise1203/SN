@@ -38,13 +38,15 @@ function doAjaxShowFriends() {
 
     $.ajax({
         url: 'f',
-        type: 'POST',
+        type: 'GET',
         data: {
             sender: id
         },
         dataType: 'html',
         success: function (response) {
             $("#content").html(response);
+            $("title").text("friends");
+            $.getScript("/resources/myJs/friends_page.js");
         }
     });
 }
@@ -54,13 +56,15 @@ function doAjaxShowOtherUsers() {
 
     $.ajax({
         url: 'ou',
-        type: 'POST',
+        type: 'GET',
         data: {
             sender: id
         },
         dataType: 'html',
         success: function (response) {
             $("#content").html(response);
+            $("title").text("users");
+            $.getScript("/resources/myJs/otherUsers_page.js");
         }
     });
 }

@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="/bootstrap.min.css">
-
 <div class="container">
     <#if hasUsers>
         <table class="table">
@@ -23,8 +21,8 @@
                         <td> <#if u.mobilePhone??>${u.mobilePhone}</#if> </td>
                         <td>
                             <form role="form">
-                                <input class="sender" type="text" style="display: none" value=${user.id}>
-                                <input class="recipient" type="text" style="display: none" value=${u.id}>
+                                <input type="text" style="display: none" value=${user.id}>
+                                <input type="text" style="display: none" value=${u.id}>
                                 <input type="button" class="btn btn-success addFriend" value="add to friends">
                             </form>
                         </td>
@@ -38,7 +36,3 @@
         </div>
     </#if>
 </div>
-
-<script type="text/javascript" src="/resources/jquery-2.1.4.js"></script>
-<script type="text/javascript" src="/resources/bootstrap.min.js"></script>
-<script type="text/javascript" src="/resources/myJs/otherUsers_page.js"></script>

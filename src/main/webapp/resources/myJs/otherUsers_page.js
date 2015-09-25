@@ -1,10 +1,9 @@
 $(document).ready(function () {
     $(".addFriend").click(function () {
-        var ctx=$(this);
-        ctx.closest("tr").hide();
-
-        var sender=ctx.closest(".sender").val();
-        var recipient=ctx.closest(".recipient").val();
+        $(this).closest("tr").hide();
+        var sAdr = $(this).closest("form").find("input").first();
+        var sender = sAdr.val();
+        var recipient = sAdr.next().val();
         $.ajax({
             url: 'makeFriends',
             type: 'POST',
