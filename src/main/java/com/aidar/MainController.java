@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -68,56 +69,70 @@ public class MainController {
     @RequestMapping("/{id}")
     public String showUserHomePage(@PathVariable Integer id, HttpServletRequest request, ModelMap model) {
         if (getCookie(request.getCookies()).equals(id.toString())) {
-            List<User> friends = dao.getFriends(id);
-            List<User> users = dao.getOtherUsers(id, friends);
             model.addAttribute("user", dao.getCurrentUser(id));
-            model.addAttribute("friends", friends);
-            model.addAttribute("hasFriends", !friends.isEmpty());
-            model.addAttribute("users", users);
-            model.addAttribute("hasUsers", !users.isEmpty());
-            return "user_page";
+            return "main_page";
         } else
             return "redirect:/oAuth";
     }
 
-    @RequestMapping(value = "/makeFriends", method = RequestMethod.POST)
-    public String makeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
-                              HttpServletRequest request) {
+
+    @RequestMapping("/f")
+    public
+    @ResponseBody
+    ModelAndView showFriends(@RequestParam("sender") String senderId, ModelMap model) {
         Integer sId = Integer.parseInt(parse(senderId));
-        if (getCookie(request.getCookies()).equals(sId.toString())) {
-            Integer rId = Integer.parseInt(parse(recipientId));
-            dao.makeFriends(sId, rId);
-            return "redirect:/" + sId;
-        } else
-            return "redirect:/oAuth";
+        List<User> friends = dao.getFriends(sId);
+        model.addAttribute("user", dao.getCurrentUser(sId));
+        model.addAttribute("friends", friends);
+        model.addAttribute("hasFriends", !friends.isEmpty());
+        return new ModelAndView("friends_page");
+    }
+
+    @RequestMapping("/ou")
+    public
+    @ResponseBody
+    ModelAndView showOtherUsers(@RequestParam("sender") String senderId, ModelMap model) {
+        Integer sId = Integer.parseInt(parse(senderId));
+        List<User> friends = dao.getFriends(sId);
+        List<User> users = dao.getOtherUsers(sId, friends);
+        model.addAttribute("user", dao.getCurrentUser(sId));
+        model.addAttribute("users", users);
+        model.addAttribute("hasUsers", !users.isEmpty());
+        return new ModelAndView("otherUsers_page");
+    }
+
+
+    @RequestMapping(value = "/makeFriends", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void makeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId) {
+        Integer sId = Integer.parseInt(parse(senderId));
+        Integer rId = Integer.parseInt(parse(recipientId));
+        dao.makeFriends(sId, rId);
     }
 
     @RequestMapping(value = "/removeFriends", method = RequestMethod.POST)
-    public String removeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
-                                HttpServletRequest request) {
+    public
+    @ResponseBody
+    void removeFriends(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId) {
         Integer sId = Integer.parseInt(parse(senderId));
-        if (getCookie(request.getCookies()).equals(sId.toString())) {
-            Integer rId = Integer.parseInt(parse(recipientId));
-            dao.removeFriends(sId, rId);
-            return "redirect:/" + sId;
-        } else
-            return "redirect:/oAuth";
+        Integer rId = Integer.parseInt(parse(recipientId));
+        dao.removeFriends(sId, rId);
     }
 
     @RequestMapping("/dialog")
-    public String showDialog(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
-                             HttpServletRequest request, ModelMap model) {
+    public
+    @ResponseBody
+    ModelAndView showDialog(@RequestParam("sender") String senderId, @RequestParam("recipient") String recipientId,
+                            HttpServletRequest request, ModelMap model) {
         Integer sId = Integer.parseInt(parse(senderId));
-        if (getCookie(request.getCookies()).equals(sId.toString())) {
-            Integer rId = Integer.parseInt(parse(recipientId));
-            List<Message> messages = dao.getDialog(sId, rId);
-            model.addAttribute("messages", messages);
-            model.addAttribute("hasMessages", !messages.isEmpty());
-            model.addAttribute("sender", dao.getCurrentUser(sId));
-            model.addAttribute("recipient", dao.getCurrentUser(rId));
-            return "dialog_page";
-        } else
-            return "redirect:/oAuth";
+        Integer rId = Integer.parseInt(parse(recipientId));
+        List<Message> messages = dao.getDialog(sId, rId);
+        model.addAttribute("messages", messages);
+        model.addAttribute("hasMessages", !messages.isEmpty());
+        model.addAttribute("sender", dao.getCurrentUser(sId));
+        model.addAttribute("recipient", dao.getCurrentUser(rId));
+        return new ModelAndView("dialog_page");
     }
 
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)

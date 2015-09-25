@@ -9,7 +9,7 @@
     <body>
         <div class="container">
             <h3> You have been successfully logged in for the first time! </h3>
-            <form action=${userUrl}>
+            <form role="form" action=${userUrl}>
                 <input type="submit" class="btn btn-primary" value="Proceed to home page">
             </form>
         </div>
