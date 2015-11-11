@@ -23,4 +23,6 @@
 
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
 </beans>
