@@ -70,11 +70,11 @@ public class PostServiceImpl implements PostService {
         if (likeRepository.findByUserAndPost(user, post) != null) {
             likeRepository.removeLike(user, post);
             postRepository.removeLike(post);
-            return post.getRating();
+            return post.getRating() - 1;
         } else {
             likeRepository.save(new Like(post, user));
             postRepository.addLike(post);
-            return post.getRating();
+            return post.getRating() + 1;
         }
     }
 

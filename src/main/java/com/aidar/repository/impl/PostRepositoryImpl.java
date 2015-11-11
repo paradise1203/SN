@@ -15,14 +15,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     @Override
     public void addLike(Post post) {
-        post.setRating(post.getRating() + 1);
         post = entityManager.merge(post);
         post.setRating(post.getRating() + 1);
     }
 
     @Override
     public void removeLike(Post post) {
-        post.setRating(post.getRating() - 1);
         post = entityManager.merge(post);
         post.setRating(post.getRating() - 1);
     }
