@@ -1,5 +1,6 @@
 package com.aidar.controller;
 
+import com.aidar.aop.RequireAnonymous;
 import com.aidar.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,18 +21,14 @@ public class AuthController {
     private AuthService authService;
 
     @RequestMapping("")
-    public String getGuestPage(HttpServletRequest request) {
-        if (authService.hasAuthority(request)) {
-            return "redirect:/user/main";
-        }
+    @RequireAnonymous
+    public String getGuestPage(HttpServletRequest request, HttpServletResponse response) {
         return "guest";
     }
 
     @RequestMapping("registration")
-    public String getRegistrationPage(HttpServletRequest request, ModelMap model) {
-        if (authService.hasAuthority(request)) {
-            return "redirect:/user/main";
-        }
+    @RequireAnonymous
+    public String getRegistrationPage(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         if (request.getParameter("mes") == null) {
             return "redirect:/login";
         }
@@ -46,10 +43,8 @@ public class AuthController {
     }
 
     @RequestMapping("login")
-    public String getLoginPage(HttpServletRequest request, Model model) {
-        if (authService.hasAuthority(request)) {
-            return "redirect:/user/main";
-        }
+    @RequireAnonymous
+    public String getLoginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         String mes = request.getParameter("mes");
         if (mes != null) {
             model.addAttribute("error", mes.equals("login") ? "No such login" : "Password is incorrect");

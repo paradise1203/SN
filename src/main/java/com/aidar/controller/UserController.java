@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
@@ -44,11 +45,8 @@ public class UserController {
     private ToFriendsWithLastMessageTransformer transformer;
 
     @RequestMapping("main")
-    public String getMainPage(HttpServletRequest request) {
-        if (authService.hasAuthority(request)) {
-            return "main";
-        }
-        return "redirect:/login";
+    public String getMainPage(HttpServletRequest request, HttpServletResponse response) {
+        return "main";
     }
 
     @RequestMapping("home")
